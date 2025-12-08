@@ -1,13 +1,13 @@
 import type { DataSource, EntityManager } from 'typeorm';
 import { createServer, getEnv, LoggerService } from 'yasui';
-import { AppDataSource } from './config/database.config.js';
+import { AppDataSource } from './config/db.config.js';
 import { ProductsController, OrdersController } from './controllers/index.js';
-import { ClassValidatorPipe } from './pipes/index.js';
 import { injectRepositories } from './repositories/index.js';
+import { validation } from '@yasui/validation';
 
 
 const PORT = parseInt(getEnv('PORT', '3000'));
-const isDev = getEnv('NODE_ENV', 'development') === 'development';
+const isDev = getEnv('NODE_ENV') === 'development';
 const logger = new LoggerService();
 logger.start();
 
@@ -28,7 +28,7 @@ await createServer({
   port: PORT,
   debug: isDev,
   controllers: [ProductsController, OrdersController],
-  globalPipes: [ClassValidatorPipe],
+  globalPipes: [validation()],
   injections: [...injectRepositories(connectDB)],
   swagger: {
     generate: true,

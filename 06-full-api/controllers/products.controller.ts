@@ -25,6 +25,7 @@ export class ProductsController {
     private productRepository: ProductRepository
   ) { }
 
+
   @ApiOperation('List products', 'Returns all available products')
   @ApiResponse(200, 'Product list', [ProductDto])
 
